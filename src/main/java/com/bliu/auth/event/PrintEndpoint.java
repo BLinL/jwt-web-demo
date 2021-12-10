@@ -20,6 +20,6 @@ public class PrintEndpoint {
                 .getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
                 .getHandlerMethods();
-        map.forEach((key, value) -> System.out.printf("{} , {} \n", key, value));
+        map.forEach((key, value) -> System.out.printf("%s, %s \n", key, value));
     }
 }
