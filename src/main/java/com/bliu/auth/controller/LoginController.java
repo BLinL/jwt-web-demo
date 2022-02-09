@@ -2,11 +2,12 @@ package com.bliu.auth.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.bliu.auth.Tools.BCrypt;
 import com.bliu.auth.base.ResultData;
 import com.bliu.auth.pojo.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,14 +41,20 @@ public class LoginController {
     }
 
     private boolean checkPass(String password, String password1) {
-        return BCrypt.checkpw(password, password1);
+        return checkpw(password, password1);
+    }
+
+    private boolean checkpw(String password, String password1) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(password, password1);
     }
 
     public User foundUser(String loginAccount){
-        return new User(1, "caiz", "$2a$12$Q9u2cjWej5LHPkTaFWHo9eXFz.7X9NDvq9F8Nt0dvYQYCasPNgafG", "zhsan", "aa@qq.com");
+        return new User(1, "caiz", "$2a$10$rnAPr505wW.L1jMp.uYIWO8RdFdWRbduHzrD1ObypoJ/osIqOcyfa", "zhsan", "aa@qq.com");
     }
 
-//    public static void main(String[] args) {
-//        System.out.println(BCrypt.hashpw("123", BCrypt.gensalt(12)));
-//    }
+    public static void main(String[] args) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        System.out.println(encoder.matches("123", "$2a$10$rnAPr505wW.L1jMp.uYIWO8RdFdWRbduHzrD1ObypoJ/osIqOcyfa"));
+    }
 }
